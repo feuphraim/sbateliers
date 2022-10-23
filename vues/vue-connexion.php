@@ -7,6 +7,13 @@
 	</head>
 	<body>
 		
+		<a href="/sbateliers">Accueil</a>
+		<br/>
+		
+		<?php if( isset( $erreur ) ){ ?>
+			<b><?= $erreur ?></b>
+		<?php } ?>
+		
 		<form action="/sbateliers/clients/connecter" method="POST">
 			Identifiant :<br/>
 			<input type="text" name="email" /><br/>

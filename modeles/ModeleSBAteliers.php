@@ -15,7 +15,6 @@
 			return self::$connexion ;
 		}
 
-
 		public static function getClient( $email , $mdp ){
 			$bd = self::getConnexion() ;
 			$sql = "select numero , nom , prenom from client where email = :email and mdp = :mdp" ;
@@ -26,7 +25,7 @@
 			return $client ;
 		}
 		
-		public static function getAteliersProgrammes(){
+		public static function getAteliersAvenir(){
 			$bd = self::getConnexion() ;
 			$sql = "select a.numero , theme , date_heure , duree , nom , prenom "
 				 . "from atelier a "
@@ -40,15 +39,26 @@
 			return $ateliers ;
 		}
 		
-		public static function getprofil( $numero ){
+		public static function getprofil( $numeroClient ){
 			$bd = self::getConnexion() ;
 			$sql = "select civilite,date_naissance,email,mobile,adresse,cp,ville from client where numero = :numero" ;
 			$st = $bd->prepare( $sql ) ;
-			$st->execute( array( ':numero' => $numero ) ) ;
+			$st->execute( array( ':numero' => $numeroClient ) ) ;
 			$client = $st->fetch( PDO::FETCH_ASSOC ) ;
 			$st->closeCursor() ;
 			return $client ;
 		}
+		
+		public static function getParticipations( $numeroClient ){
+			$bd = self::getConnexion() ;
+			$sql = "select atelier from participer where client = :client" ;
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':client' => $numeroClient ) ) ;
+			$ateliers = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $ateliers ;
+		}
+		
 		
 		public static function enregistrerClient(
 				$civilite ,
@@ -88,12 +98,117 @@
 			
 		}
 		
-	}
-	
-	//ModeleSBAteliers::getClient( "valentine.onestas@gmail.com" , "azerty" ) ;
-	
-	//var_dump( ModeleSBAteliers::getAteliersProgrammes() ) ;
-	
+		
+		public static function enregistrerParticipationAtelier( $numClient , $numAtelier ){
+			$bd = self::getConnexion() ;
+			$sql = 'insert into participer values( :client , :atelier , CURRENT_DATE() )' ;
+			$st = $bd -> prepare( $sql ) ;
+			$st -> execute( array( ':client' => $numClient , ':atelier' => $numAtelier ) ) ;
+			$st -> closeCursor() ;
+			
+			$sql = 'update atelier set nb_participants = nb_participants + 1 where numero = :atelier' ;
+			$st = $bd -> prepare( $sql ) ;
+			$st -> execute( array( ':atelier' => $numAtelier ) ) ;
+			$st -> closeCursor() ;
+			
+		}
+		
+		
+		public static function annulerParticipationAtelier( $numClient , $numAtelier ){
+			$bd = self::getConnexion() ;
+			$sql = 'delete from participer where client = :client and atelier = :atelier' ;
+			$st = $bd -> prepare( $sql ) ;
+			$st -> execute( array( ':client' => $numClient , ':atelier' => $numAtelier ) ) ;
+			$st -> closeCursor() ;
+			
+			$sql = 'update atelier set nb_participants = nb_participants - 1 where numero = :atelier' ;
+			$st = $bd -> prepare( $sql ) ;
+			$st -> execute( array( ':atelier' => $numAtelier ) ) ;
+			$st -> closeCursor() ;
+			
+		}
+		
+		public static function getAteliersPasses( $numeroClient ){
+			
+			$bd = self::getConnexion() ;
+			$sql = <<<FIN_REQ_ATELIERS_PASSES
+				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , TRUE as participe
+				from participer p
+				inner join atelier a
+				on p.atelier = a.numero
+				inner join responsable r
+				on a.responsable = r.numero
+				where p.client = :client
+				and date_heure < now()
+				)
 
+				union
+
+				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , FALSE as participe
+				from atelier a
+				inner join responsable r
+				on a.responsable = r.numero
+				where a.numero not in (
+					select distinct atelier
+					from participer
+					where client = :client
+				)
+				and nb_places - nb_participants > 0
+				and date_heure < now()
+				)
+				order by date_heure
+FIN_REQ_ATELIERS_PASSES;
+
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':client' => $numeroClient ) ) ;
+			$ateliers = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $ateliers ;
+			
+		}
+
+		public static function getAteliersProgrammes( $numeroClient ){
+
+			$bd = self::getConnexion() ;
+			$sql = <<<FIN_REQ_ATELIERS_EN_COURS
+				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , TRUE as participe
+				from participer p
+				inner join atelier a
+				on p.atelier = a.numero
+				inner join responsable r
+				on a.responsable = r.numero
+				where p.client = :client
+				and date_heure > now()
+				)
+
+				union
+
+				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , FALSE as participe
+				from atelier a
+				inner join responsable r
+				on a.responsable = r.numero
+				where a.numero not in (
+					select distinct atelier
+					from participer
+					where client = :client
+				)
+				and nb_places - nb_participants > 0
+				and date_heure > now()
+				)
+				order by date_heure
+FIN_REQ_ATELIERS_EN_COURS;
+
+
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':client' => $numeroClient ) ) ;
+			$ateliers = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $ateliers ;
+
+		}
+
+		
+	};
+	
 
 ?>

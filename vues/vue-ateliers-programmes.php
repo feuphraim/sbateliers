@@ -21,6 +21,7 @@
 				<th>Heure</th>
 				<th>Durée</th>
 				<th>Responsable</th>
+				<th>Participation</th>
 			</thead>
 			
 			<tbody>
@@ -37,7 +38,22 @@
 						<td><?= $jour ?>/<?= $mois ?>/<?= $annee ?></td>
 						<td><?= $heures ?>:<?= $minutes ?></td>
 						<td><?= $unAtelier[ 'duree' ] ?></td>
-						<td><?= $unAtelier[ 'prenom' ] ?> <?= $unAtelier[ 'prenom' ] ?></td>
+						<td><?= $unAtelier[ 'prenom' ] ?> <?= $unAtelier[ 'nom' ] ?></td>
+						
+						<td>
+						
+							<?php if( $unAtelier[ 'participe' ] == '0' ){ ?>
+							
+								<td><a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/proceder">Procéder</a></td>
+								
+							<?php } else { ?>
+								
+								<td><a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/annuler">Annuler</a></td>
+								
+							<?php } ?>
+						
+						</td>
+						
 					</tr>
 					
 				<?php } ?>

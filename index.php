@@ -33,4 +33,17 @@
 		session_start() ;
 		require "controleurs/ctrl-consulter-ateliers.php" ;
 	}
+	elseif( preg_match( '#^participations/([0-9]+)/proceder$#' , $route , $atomes ) ){
+		session_start() ;
+		$numAtelier = $atomes[ 1 ] ;
+		require "controleurs/ctrl-inscrire-atelier.php" ;
+	}
+	elseif( preg_match( '#^participations/([0-9]+)/annuler$#' , $route , $atomes ) ){
+		session_start() ;
+		$numAtelier = $atomes[ 1 ] ;
+		require "controleurs/ctrl-annuler-participation-atelier.php" ;
+	}
+	else {
+		var_dump( $route ) ;
+	}
 ?>

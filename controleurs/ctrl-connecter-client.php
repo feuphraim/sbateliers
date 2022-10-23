@@ -16,7 +16,8 @@
 		header( "Location: /sbateliers/clients/espace" );
 	}
 	else {
-		header( "Location: /sbateliers/clients/connexion" ) ;
+		$erreur = 'EMail ou mot de passe incorrect.' ;
+		require "vues/vue-connexion.php" ;
 	}
 
 ?>
