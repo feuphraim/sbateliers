@@ -44,11 +44,11 @@
 						
 							<?php if( $unAtelier[ 'participe' ] == '0' ){ ?>
 							
-								<td><a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/proceder">Procéder</a></td>
+								<a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/proceder">Procéder</a>
 								
 							<?php } else { ?>
 								
-								<td><a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/annuler">Annuler</a></td>
+								<a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/annuler">Annuler</a>
 								
 							<?php } ?>
 						

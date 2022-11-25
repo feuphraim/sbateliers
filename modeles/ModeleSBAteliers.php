@@ -10,7 +10,7 @@
 
 		private static function getConnexion(){
 			if( self::$connexion == null ){
-				new ModeleSBateliers() ;
+				new ModeleSBAteliers() ;
 			}
 			return self::$connexion ;
 		}
