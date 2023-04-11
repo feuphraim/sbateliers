@@ -33,6 +33,10 @@
 		session_start() ;
 		require "controleurs/ctrl-consulter-ateliers.php" ;
 	}
+	elseif( $route == 'ateliers/passes' ){
+		session_start() ;
+		require "controleurs/ctrl-consulter-ateliers-passes.php" ;
+	}
 	elseif( preg_match( '#^participations/([0-9]+)/proceder$#' , $route , $atomes ) ){
 		session_start() ;
 		$numAtelier = $atomes[ 1 ] ;

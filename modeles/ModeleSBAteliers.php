@@ -171,7 +171,7 @@ FIN_REQ_ATELIERS_PASSES;
 
 			$bd = self::getConnexion() ;
 			$sql = <<<FIN_REQ_ATELIERS_EN_COURS
-				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , TRUE as participe
+				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , a.duree as duree , r.nom as nom, r.prenom as prenom , TRUE as participe
 				from participer p
 				inner join atelier a
 				on p.atelier = a.numero
@@ -183,7 +183,7 @@ FIN_REQ_ATELIERS_PASSES;
 
 				union
 
-				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , FALSE as participe
+				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , a.duree as duree , r.nom as nom, r.prenom as prenom , FALSE as participe
 				from atelier a
 				inner join responsable r
 				on a.responsable = r.numero
