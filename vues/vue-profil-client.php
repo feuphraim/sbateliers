@@ -8,7 +8,9 @@
 	
 	<body>
 		<a href="/sbateliers/clients/espace">Mon espace</a>
+		<a href="/sbateliers/clients/profil">Profil</a>
 		<a href="/sbateliers/ateliers/programmes">Ateliers programmés</a>
+		<a href="/sbateliers/ateliers/passes">Ateliers passés</a>
 		<a href="/sbateliers/clients/deconnecter">Se déconnecter</a>
 		
 		

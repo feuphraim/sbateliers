@@ -13,7 +13,7 @@
 		<a href="/sbateliers/ateliers/passes">Ateliers passés</a>
 		<a href="/sbateliers/clients/deconnecter">Se déconnecter</a>
 		
-		<h4>Ateliers programmés</h4>
+		<h4>Ateliers passés</h4>
 		
 		<table>
 			
@@ -23,7 +23,7 @@
 				<th>Heure</th>
 				<th>Durée</th>
 				<th>Responsable</th>
-				<th>Participation</th>
+				<th>Commentaires</th>
 			</thead>
 			
 			<tbody>
@@ -43,17 +43,7 @@
 						<td><?= $unAtelier[ 'prenom' ] ?> <?= $unAtelier[ 'nom' ] ?></td>
 						
 						<td>
-						
-							<?php if( $unAtelier[ 'participe' ] == '0' ){ ?>
-							
-								<a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/proceder">Procéder</a>
-								
-							<?php } else { ?>
-								
-								<a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/annuler">Annuler</a>
-								
-							<?php } ?>
-						
+							<a href="/sbateliers/ateliers/<?= $unAtelier[ 'numero' ] ?>/commentaires/voir">Voir</a>
 						</td>
 						
 					</tr>
@@ -63,7 +53,7 @@
 			</tbody>
 			
 		</table>
-		
+
 	</body>
 	
 </html>

@@ -31,7 +31,7 @@
 	}
 	elseif( $route == 'ateliers/programmes' ){
 		session_start() ;
-		require "controleurs/ctrl-consulter-ateliers.php" ;
+		require "controleurs/ctrl-consulter-ateliers-programmes.php" ;
 	}
 	elseif( $route == 'ateliers/passes' ){
 		session_start() ;
@@ -46,6 +46,16 @@
 		session_start() ;
 		$numAtelier = $atomes[ 1 ] ;
 		require "controleurs/ctrl-annuler-participation-atelier.php" ;
+	}
+	elseif( preg_match( '#^ateliers/([0-9]+)/commentaires/voir$#' , $route , $atomes ) ){
+		session_start() ;
+		$numAtelier = $atomes[ 1 ] ;
+		require "controleurs/ctrl-consulter-commentaires-ateliers.php" ;
+	}
+	elseif( preg_match( '#^ateliers/([0-9]+)/commenter$#' , $route , $atomes ) ){
+		session_start() ;
+		$numAtelier = $atomes[ 1 ] ;
+		require "controleurs/ctrl-commenter-atelier.php" ;
 	}
 	else {
 		var_dump( $route ) ;

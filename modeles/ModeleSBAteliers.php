@@ -39,7 +39,7 @@
 			return $ateliers ;
 		}
 		
-		public static function getprofil( $numeroClient ){
+		public static function getProfil( $numeroClient ){
 			$bd = self::getConnexion() ;
 			$sql = "select civilite,date_naissance,email,mobile,adresse,cp,ville from client where numero = :numero" ;
 			$st = $bd->prepare( $sql ) ;
@@ -57,6 +57,98 @@
 			$ateliers = $st->fetchall( PDO::FETCH_ASSOC ) ;
 			$st->closeCursor() ;
 			return $ateliers ;
+		}
+		
+		public static function getAtelier( $numeroAtelier ){
+			$bd = self::getConnexion() ;
+			$sql = "select * from atelier where numero = :numero" ;
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':numero' => $numeroAtelier ) ) ;
+			$atelier = $st->fetch( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $atelier ;
+		}
+		
+		public static function getAutresCommentairesAtelier( $numeroAtelier , $numeroClient ){
+			$bd = self::getConnexion() ;
+			$sql = <<<FIN_REQ_AUTRES_COMMENTAIRES
+				select commentaire , date_redaction , nom , prenom
+				from commenter
+				inner join client
+				on commenter.client = client.numero
+				where commenter.atelier = :atelier
+				and commenter.client <> :client
+FIN_REQ_AUTRES_COMMENTAIRES;
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':atelier' => $numeroAtelier , ':client' => $numeroClient ) ) ;
+			$commentaires = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $commentaires ;
+		}
+		
+		
+		public static function commenterAtelier( $numeroAtelier , $numeroClient , $commentaire ){
+			$bd = self::getConnexion() ;
+			$sql = <<<FIN_REQ_COMMENTAIRES
+				select *
+				from commenter
+				where commenter.atelier = :atelier
+				and commenter.client = :client
+FIN_REQ_COMMENTAIRES;
+
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':atelier' => $numeroAtelier , ':client' => $numeroClient ) ) ;
+			$commentaires = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			
+			if( count( $commentaires ) != 0 ){
+				$sql = "delete from commenter "
+					 . "where commenter.atelier = :atelier "
+					 . "and commenter.client = :client" ;
+			
+				$st = $bd -> prepare( $sql ) ;
+				$st -> execute( array( ':atelier' => $numeroAtelier , ':client' => $numeroClient ) ) ;
+				$st->closeCursor() ;
+			}
+			
+			$sql = "insert into commenter "
+				 . "values( :client , :atelier , :commentaire , CURRENT_DATE() ) " ;
+				 
+			$st = $bd -> prepare( $sql ) ;
+			$st -> execute( array( ':atelier' => $numeroAtelier , ':client' => $numeroClient , ':commentaire' => $commentaire ) ) ;
+			$st->closeCursor() ;
+		}
+		
+		public static function getMonCommentaireAtelier( $numeroAtelier , $numeroClient ){
+			$bd = self::getConnexion() ;
+			$sql = <<<FIN_REQ_COMMENTAIRES
+				select commentaire , date_redaction
+				from commenter
+				inner join client
+				where commenter.atelier = :atelier
+				and commenter.client = :client
+FIN_REQ_COMMENTAIRES;
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':atelier' => $numeroAtelier , ':client' => $numeroclient ) ) ;
+			$commentaires = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $commentaires ;
+		}
+		
+		public static function getCommentairesAtelier( $numeroAtelier ){
+			$bd = self::getConnexion() ;
+			$sql = <<<FIN_REQ_COMMENTAIRES
+				select commentaire , date_redaction , nom , prenom
+				from commenter
+				inner join client
+				on commenter.client = client.numero
+				where commenter.atelier = :atelier
+FIN_REQ_COMMENTAIRES;
+			$st = $bd->prepare( $sql ) ;
+			$st->execute( array( ':atelier' => $numeroAtelier ) ) ;
+			$commentaires = $st->fetchall( PDO::FETCH_ASSOC ) ;
+			$st->closeCursor() ;
+			return $commentaires ;
 		}
 		
 		
@@ -132,7 +224,7 @@
 			
 			$bd = self::getConnexion() ;
 			$sql = <<<FIN_REQ_ATELIERS_PASSES
-				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , TRUE as participe
+				select a.numero as numero , a.duree as duree, a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom
 				from participer p
 				inner join atelier a
 				on p.atelier = a.numero
@@ -140,23 +232,6 @@
 				on a.responsable = r.numero
 				where p.client = :client
 				and date_heure < now()
-				)
-
-				union
-
-				(select a.numero as numero , a.theme as theme , a.date_heure as date_heure , r.nom as nom, r.prenom as prenom , FALSE as participe
-				from atelier a
-				inner join responsable r
-				on a.responsable = r.numero
-				where a.numero not in (
-					select distinct atelier
-					from participer
-					where client = :client
-				)
-				and nb_places - nb_participants > 0
-				and date_heure < now()
-				)
-				order by date_heure
 FIN_REQ_ATELIERS_PASSES;
 
 			$st = $bd->prepare( $sql ) ;
