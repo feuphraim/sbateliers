@@ -5,7 +5,12 @@
 		private static $connexion = null ;
 		
 		private function __construct(){
-			self::$connexion = new PDO( 'mysql:host=localhost;dbname=sb', 'slam', 'azerty' ) ;
+			// self::$connexion = new PDO( 'mysql:host=localhost;dbname=sb', 'slam', 'azerty' ) ;
+			$host = getenv('DB_HOST') ?: 'localhost';
+                        $db = getenv('DB_NAME') ?: 'sb';
+			$user = getenv('DB_USER') ?: 'slam';
+			$pass = getenv('DB_PASSWORD') ?: 'azerty';
+			self::$connexion = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
 		}
 
 		private static function getConnexion(){
