@@ -13,7 +13,7 @@
 		$_SESSION[ "nom" ] = $client[ "nom" ] ; 
 		$_SESSION[ "prenom" ] = $client[ "prenom" ] ; 
 		
-		header( "Location: /sbateliers/clients/espace" );
+		header( "Location: /clients/espace" );
 	}
 	else {
 		$erreur = 'EMail ou mot de passe incorrect.' ;

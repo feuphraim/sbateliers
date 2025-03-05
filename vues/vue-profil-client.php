@@ -7,11 +7,11 @@
 	</head>
 	
 	<body>
-		<a href="/sbateliers/clients/espace">Mon espace</a>
-		<a href="/sbateliers/clients/profil">Profil</a>
-		<a href="/sbateliers/ateliers/programmes">Ateliers programmés</a>
-		<a href="/sbateliers/ateliers/passes">Ateliers passés</a>
-		<a href="/sbateliers/clients/deconnecter">Se déconnecter</a>
+		<a href="/clients/espace">Mon espace</a>
+		<a href="/clients/profil">Profil</a>
+		<a href="/ateliers/programmes">Ateliers programmés</a>
+		<a href="/ateliers/passes">Ateliers passés</a>
+		<a href="/clients/deconnecter">Se déconnecter</a>
 		
 		
 		<h5><?= $nom ?></h5>

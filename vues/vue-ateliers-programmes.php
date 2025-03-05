@@ -7,11 +7,11 @@
 	</head>
 	
 	<body>
-		<a href="/sbateliers/clients/espace">Mon espace</a>
-		<a href="/sbateliers/clients/profil">Profil</a>
-		<a href="/sbateliers/ateliers/programmes">Ateliers programmés</a>
-		<a href="/sbateliers/ateliers/passes">Ateliers passés</a>
-		<a href="/sbateliers/clients/deconnecter">Se déconnecter</a>
+		<a href="/clients/espace">Mon espace</a>
+		<a href="/clients/profil">Profil</a>
+		<a href="/ateliers/programmes">Ateliers programmés</a>
+		<a href="/ateliers/passes">Ateliers passés</a>
+		<a href="/clients/deconnecter">Se déconnecter</a>
 		
 		<h4>Ateliers programmés</h4>
 		
@@ -46,11 +46,11 @@
 						
 							<?php if( $unAtelier[ 'participe' ] == '0' ){ ?>
 							
-								<a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/proceder">Procéder</a>
+								<a href="/participations/<?= $unAtelier[ 'numero' ] ?>/proceder">Procéder</a>
 								
 							<?php } else { ?>
 								
-								<a href="/sbateliers/participations/<?= $unAtelier[ 'numero' ] ?>/annuler">Annuler</a>
+								<a href="/participations/<?= $unAtelier[ 'numero' ] ?>/annuler">Annuler</a>
 								
 							<?php } ?>
 						

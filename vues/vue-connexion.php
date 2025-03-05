@@ -7,14 +7,14 @@
 	</head>
 	<body>
 		
-		<a href="/sbateliers">Accueil</a>
+		<a href="/">Accueil</a>
 		<br/>
 		
 		<?php if( isset( $erreur ) ){ ?>
 			<b><?= $erreur ?></b>
 		<?php } ?>
 		
-		<form action="/sbateliers/clients/connecter" method="POST">
+		<form action="/clients/connecter" method="POST">
 			Identifiant :<br/>
 			<input type="text" name="email" /><br/>
 			Mot de passe :<br/>

@@ -25,6 +25,6 @@
 			$mdp
 		) ;
 	
-	header( "Location: /sbateliers" ) ;
+	header( "Location: /" ) ;
 
 ?>

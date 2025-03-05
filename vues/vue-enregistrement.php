@@ -7,9 +7,9 @@
 	</head>
 	<body>
 		
-		<a href="/sbateliers">Accueil</a>
+		<a href="/">Accueil</a>
 		<br/>
-		<form action="/sbateliers/clients/enregistrer" method="POST">
+		<form action="/clients/enregistrer" method="POST">
 			Civilité :<br/>
 			<input type="radio" name="civilite" value="Mlle" checked />Mlle
 			<input type="radio" name="civilite" value="Mme"/>Mme
