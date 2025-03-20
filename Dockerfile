@@ -17,3 +17,9 @@ RUN chown -R www-data:www-data /var/www/html
 RUN find /var/www/html -type d -exec chmod 755 {} \;
 RUN find /var/www/html -type f -exec chmod 644 {} \;
 RUN chmod 644 /var/www/html/.htaccess
+
+# Créer un script entrypoint qui corrige les permissions
+COPY ./docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
