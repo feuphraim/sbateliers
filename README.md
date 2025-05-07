@@ -12,7 +12,7 @@ Application de gestion d'ateliers permettant aux utilisateurs de s'inscrire, con
 
 1. Cloner le dépôt
 ```bash
-git clone git@github.com:feuphraim/sbateliers.git
+git clone https://github.com/feuphraim/sbateliers.git
 cd sbateliers
 ```
 
