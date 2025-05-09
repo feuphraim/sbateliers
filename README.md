@@ -18,9 +18,14 @@ cd sbateliers
 
 2. Démarrer l'application avec Docker Compose
 
-Méthode recommandée:
+Démarrage en une seule commande:
 ```bash
-# Nettoyer les anciennes installations si nécessaire
+docker-compose up -d
+```
+
+Méthode recommandée en cad de problème:
+```bash
+# Nettoyer les anciennes installations si nécessaire (Attention toute ancienne donnée sera supprimée)
 docker-compose down -v
 docker system prune -a
 
@@ -28,11 +33,6 @@ docker system prune -a
 docker pull mysql:5.7
 docker-compose up -d db
 docker-compose up -d web
-```
-
-Alternative (démarrage en une seule commande):
-```bash
-docker-compose up -d
 ```
 
 3. Accéder à l'application
